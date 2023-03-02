@@ -1,19 +1,16 @@
-﻿using Nuke.Common;
-using Nuke.Common.ProjectModel;
-using Serilog;
+﻿using JetBrains.Annotations;
+using Nuke.Common;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 namespace Xerris.Nuke.Components;
 
-public interface ILint : ITools
+[PublicAPI]
+public interface ILint : ITools, IHasSolution
 {
-    [Solution]
-    Solution Solution => TryGetValue(() => Solution);
-
     [Parameter]
     string? LintExclude => TryGetValue(() => LintExclude);
 
-    string ExcludedPathsArgument => string.IsNullOrEmpty(LintExclude)
+    private string ExcludedPathsArgument => !string.IsNullOrWhiteSpace(LintExclude)
         ? $"--exclude {string.Join(' ', LintExclude)}"
         : string.Empty;
 
@@ -21,21 +18,23 @@ public interface ILint : ITools
         .DependsOn(RestoreTools)
         .Executes(() =>
         {
-            Log.Information($"Excluded paths: {string.Join(' ', LintExclude)}");
-
             DotNet($"format whitespace {Solution} " +
-                   $"--verify-no-changes {ExcludedPathsArgument}");
+                   "--verify-no-changes " +
+                   $"{ExcludedPathsArgument}");
 
             DotNet($"format style {Solution} " +
-                   $"--verify-no-changes {ExcludedPathsArgument}");
+                   "--verify-no-changes " +
+                   $"{ExcludedPathsArgument}");
         });
 
     Target FixLint => _ => _
         .DependsOn(RestoreTools)
         .Executes(() =>
         {
-            DotNet($"format whitespace {Solution} {ExcludedPathsArgument}");
+            DotNet($"format whitespace {Solution} " +
+                   $"{ExcludedPathsArgument}");
 
-            DotNet($"format style {Solution} {ExcludedPathsArgument}");
+            DotNet($"format style {Solution} " +
+                   $"{ExcludedPathsArgument}");
         });
 }

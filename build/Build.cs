@@ -1,12 +1,13 @@
+using System.Collections.Generic;
+using System.IO;
 using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
 using Xerris.Nuke.Components;
-using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
-class Build : NukeBuild, ILint
+class Build : NukeBuild, ILint, ITest, IReportCoverage, IHasConfiguration
 {
     /// Support plugins are available for:
     ///   - JetBrains ReSharper        https://nuke.build/resharper
@@ -15,9 +16,6 @@ class Build : NukeBuild, ILint
     ///   - Microsoft VSCode           https://nuke.build/vscode
 
     public static int Main() => Execute<Build>(x => x.Compile);
-
-    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
     [Solution] readonly Solution Solution;
     Solution IHasSolution.Solution => Solution;
@@ -31,7 +29,9 @@ class Build : NukeBuild, ILint
             DotNetClean(s => s
                 .SetProject(Solution));
 
-            EnsureCleanDirectory(ArtifactsDirectory);
+
+            Directory.Delete(ArtifactsDirectory);
+            Directory.CreateDirectory(ArtifactsDirectory);
         });
 
     Target Restore => _ => _
@@ -48,7 +48,10 @@ class Build : NukeBuild, ILint
         {
             DotNetBuild(s => s
                 .SetProjectFile(Solution)
-                .SetConfiguration(Configuration)
+                .SetConfiguration(((IHasConfiguration)this).Configuration)
                 .EnableNoRestore());
         });
+
+    bool IReportCoverage.CreateCoverageHtmlReport => true;
+    IEnumerable<Project> ITest.TestProjects => Partition.GetCurrent(Solution.GetProjects("*.Tests"));
 }

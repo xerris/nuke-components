@@ -8,7 +8,6 @@
       "properties": {
         "Configuration": {
           "type": "string",
-          "description": "Configuration to build - Default is 'Debug' (local) or 'Release' (server)",
           "enum": [
             "Debug",
             "Release"
@@ -79,8 +78,10 @@
               "Compile",
               "FixLint",
               "Lint",
+              "ReportCoverage",
               "Restore",
-              "RestoreTools"
+              "RestoreTools",
+              "Test"
             ]
           }
         },
@@ -98,8 +99,10 @@
               "Compile",
               "FixLint",
               "Lint",
+              "ReportCoverage",
               "Restore",
-              "RestoreTools"
+              "RestoreTools",
+              "Test"
             ]
           }
         },

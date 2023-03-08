@@ -18,8 +18,11 @@ name: release
 
 on:
   push:
+    branches:
+      - main
+      - 'release/v*'
     tags:
-      - 'v/*'
+      - 'v*'
 
 jobs:
   ubuntu-latest:

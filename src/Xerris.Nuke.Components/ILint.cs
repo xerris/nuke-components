@@ -1,8 +1,10 @@
+using JetBrains.Annotations;
 using Nuke.Common;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 namespace Xerris.Nuke.Components;
 
+[PublicAPI]
 public interface ILint : ITools, IHasSolution
 {
     IEnumerable<string> ExcludedLintPaths { get; }

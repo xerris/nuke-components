@@ -1,0 +1,2 @@
+[*.cs]
+resharper_variable_hides_outer_variable_highlighting = silent

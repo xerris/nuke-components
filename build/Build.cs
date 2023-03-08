@@ -1,12 +1,23 @@
+using System.Collections.Generic;
 using Nuke.Common;
-using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
 using Xerris.Nuke.Components;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
-class Build : NukeBuild, ILint
+// ReSharper disable RedundantExtendsListEntry
+// ReSharper disable InconsistentNaming
+
+class Build : NukeBuild,
+    IHasGitRepository,
+    IRestore,
+    ILint,
+    ICompile,
+    //IPack, // TODO
+    ITest,
+    IReportCoverage
+    //IPublish // TODO
 {
     /// Support plugins are available for:
     ///   - JetBrains ReSharper        https://nuke.build/resharper
@@ -14,41 +25,28 @@ class Build : NukeBuild, ILint
     ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
     ///   - Microsoft VSCode           https://nuke.build/vscode
 
-    public static int Main() => Execute<Build>(x => x.Compile);
+    public static int Main() => Execute<Build>(x => ((ICompile)x).Compile);
 
-    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
-
-    [Solution] readonly Solution Solution;
+    [Solution]
+    readonly Solution Solution;
     Solution IHasSolution.Solution => Solution;
 
-    AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
-
     Target Clean => _ => _
-        .Before(Restore)
+        .Before<IRestore>()
         .Executes(() =>
         {
-            DotNetClean(s => s
-                .SetProject(Solution));
+            DotNetClean(_ => _
+                .SetProject(((IHasSolution) this).Solution));
 
-            EnsureCleanDirectory(ArtifactsDirectory);
+            EnsureCleanDirectory(((IHasArtifacts) this).ArtifactsDirectory);
         });
 
-    Target Restore => _ => _
-        .Executes(() =>
-        {
-            DotNetRestore(s => s
-                .SetProjectFile(Solution));
-        });
+    Target ICompile.Compile => _ => _
+        .Inherit<ICompile>()
+        .DependsOn(Clean)
+        .DependsOn<ILint>(x => x.Lint);
 
-    Target Compile => _ => _
-        .DependsOn(Clean, Restore)
-        .DependsOn<ILint>(x => x.Lint)
-        .Executes(() =>
-        {
-            DotNetBuild(s => s
-                .SetProjectFile(Solution)
-                .SetConfiguration(Configuration)
-                .EnableNoRestore());
-        });
+    bool IReportCoverage.CreateCoverageHtmlReport => true;
+
+    IEnumerable<Project> ITest.TestProjects => Partition.GetCurrent(Solution.GetProjects("*.Tests"));
 }

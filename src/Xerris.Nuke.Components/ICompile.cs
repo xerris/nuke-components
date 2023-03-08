@@ -12,11 +12,6 @@ public interface ICompile : IRestore, IHasConfiguration
         .WhenSkipped(DependencyBehavior.Skip)
         .Executes(() =>
         {
-            // TODO: Versioning
-            //ReportSummary(_ => _
-            //    .WhenNotNull(this as IHazGitVersion, (_, o) => _
-            //        .AddPair("Version", o.Versioning.FullSemVer)));
-
             DotNetTasks.DotNetBuild(_ => _
                 .Apply(CompileSettingsBase)
                 .Apply(CompileSettings));
@@ -37,11 +32,6 @@ public interface ICompile : IRestore, IHasConfiguration
         .SetNoRestore(SucceededTargets.Contains(Restore))
         .WhenNotNull(this as IHasGitRepository, (_, o) => _
             .SetRepositoryUrl(o!.GitRepository.HttpsUrl));
-    // TODO: Versioning
-    //.WhenNotNull(this as IHazGitVersion, (_, o) => _
-    //    .SetAssemblyVersion(o.Versioning.AssemblySemVer)
-    //    .SetFileVersion(o.Versioning.AssemblySemFileVer)
-    //    .SetInformationalVersion(o.Versioning.InformationalVersion)));
 
     sealed Configure<DotNetPublishSettings> PublishSettingsBase => _ => _
         .SetConfiguration(Configuration)
@@ -51,11 +41,6 @@ public interface ICompile : IRestore, IHasConfiguration
             .EnableContinuousIntegrationBuild())
         .WhenNotNull(this as IHasGitRepository, (_, o) => _
             .SetRepositoryUrl(o!.GitRepository.HttpsUrl));
-    // TODO: Versioning
-    //.WhenNotNull(this as IHazGitVersion, (_, o) => _
-    //    .SetAssemblyVersion(o.Versioning.AssemblySemVer)
-    //    .SetFileVersion(o.Versioning.AssemblySemFileVer)
-    //    .SetInformationalVersion(o.Versioning.InformationalVersion)));
 
     Configure<DotNetBuildSettings> CompileSettings => _ => _;
     Configure<DotNetPublishSettings> PublishSettings => _ => _;

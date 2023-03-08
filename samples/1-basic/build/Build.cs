@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Nuke.Common;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;

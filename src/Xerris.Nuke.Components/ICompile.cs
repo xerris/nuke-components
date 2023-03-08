@@ -2,6 +2,7 @@ using Nuke.Common;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Utilities.Collections;
 
 namespace Xerris.Nuke.Components;
 
@@ -12,6 +13,10 @@ public interface ICompile : IRestore, IHasConfiguration
         .WhenSkipped(DependencyBehavior.Skip)
         .Executes(() =>
         {
+            ReportSummary(_ => _
+                .WhenNotNull(this as IHasVersioning, (_, o) => _
+                    .AddPair("Version", o!.Versioning.FullSemVer)));
+
             DotNetTasks.DotNetBuild(_ => _
                 .Apply(CompileSettingsBase)
                 .Apply(CompileSettings));
@@ -31,7 +36,11 @@ public interface ICompile : IRestore, IHasConfiguration
             .EnableContinuousIntegrationBuild())
         .SetNoRestore(SucceededTargets.Contains(Restore))
         .WhenNotNull(this as IHasGitRepository, (_, o) => _
-            .SetRepositoryUrl(o!.GitRepository.HttpsUrl));
+            .SetRepositoryUrl(o!.GitRepository.HttpsUrl))
+        .WhenNotNull(this as IHasVersioning, (_, o) => _
+            .SetAssemblyVersion(o!.Versioning.AssemblySemVer)
+            .SetFileVersion(o!.Versioning.AssemblySemFileVer)
+            .SetInformationalVersion(o!.Versioning.InformationalVersion));
 
     sealed Configure<DotNetPublishSettings> PublishSettingsBase => _ => _
         .SetConfiguration(Configuration)
@@ -40,7 +49,11 @@ public interface ICompile : IRestore, IHasConfiguration
         .When(IsServerBuild, _ => _
             .EnableContinuousIntegrationBuild())
         .WhenNotNull(this as IHasGitRepository, (_, o) => _
-            .SetRepositoryUrl(o!.GitRepository.HttpsUrl));
+            .SetRepositoryUrl(o!.GitRepository.HttpsUrl))
+        .WhenNotNull(this as IHasVersioning, (_, o) => _
+            .SetAssemblyVersion(o!.Versioning.AssemblySemVer)
+            .SetFileVersion(o!.Versioning.AssemblySemFileVer)
+            .SetInformationalVersion(o!.Versioning.InformationalVersion));
 
     Configure<DotNetBuildSettings> CompileSettings => _ => _;
     Configure<DotNetPublishSettings> PublishSettings => _ => _;

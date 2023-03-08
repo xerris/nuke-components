@@ -5,13 +5,10 @@ namespace Xerris.Nuke.Components;
 
 public interface ILint : ITools, IHasSolution
 {
-    [Parameter]
-    string? LintExclude => TryGetValue(() => LintExclude);
+    IEnumerable<string> ExcludedLintPaths { get; }
 
-    // TODO: Exclusions as required property?
-
-    private string ExcludedPathsArgument => !string.IsNullOrWhiteSpace(LintExclude)
-        ? $"--exclude {string.Join(' ', LintExclude)}"
+    private string ExcludedPathsArgument => ExcludedLintPaths.Any()
+        ? $"--exclude {string.Join(' ', ExcludedLintPaths)}"
         : string.Empty;
 
     Target Lint => _ => _

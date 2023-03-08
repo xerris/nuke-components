@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using Nuke.Common;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.GitVersion;
 using Xerris.Nuke.Components;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -11,13 +13,14 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 class Build : NukeBuild,
     IHasGitRepository,
+    IHasVersioning,
     IRestore,
     ILint,
     ICompile,
-    IPack,
     ITest,
-    IReportCoverage
-//IPublish // TODO
+    IReportCoverage,
+    IPack,
+    IPush
 {
     /// Support plugins are available for:
     ///   - JetBrains ReSharper        https://nuke.build/resharper
@@ -36,9 +39,9 @@ class Build : NukeBuild,
         .Executes(() =>
         {
             DotNetClean(_ => _
-                .SetProject(((IHasSolution) this).Solution));
+                .SetProject(Solution));
 
-            EnsureCleanDirectory(((IHasArtifacts) this).ArtifactsDirectory);
+            EnsureCleanDirectory(FromComponent<IHasArtifacts>().ArtifactsDirectory);
         });
 
     Target ICompile.Compile => _ => _
@@ -46,7 +49,13 @@ class Build : NukeBuild,
         .DependsOn(Clean)
         .DependsOn<ILint>(x => x.Lint);
 
+    public IEnumerable<string> ExcludedLintPaths => Enumerable.Empty<string>();
+
     bool IReportCoverage.CreateCoverageHtmlReport => true;
 
     IEnumerable<Project> ITest.TestProjects => Partition.GetCurrent(Solution.GetProjects("*.Tests"));
+
+    T FromComponent<T>()
+        where T : INukeBuild
+        => (T) (object) this;
 }

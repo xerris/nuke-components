@@ -22,7 +22,8 @@ using Xerris.Nuke.Components;
     PublishArtifacts = true,
     InvokedTargets = new[] { nameof(ITest.Test), nameof(IPack.Pack), nameof(IPush.Push) },
     CacheKeyFiles = new[] { "global.json", "source/**/*.csproj" },
-    EnableGitHubToken = true)]
+    EnableGitHubToken = true,
+    ImportSecrets = new[] { nameof(IPush.NuGetApiKey) })]
 partial class Build
 {
 }

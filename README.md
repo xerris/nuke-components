@@ -1,11 +1,8 @@
-# nuke-components
+# nuke-components | ![release](https://github.com/xerris/nuke-components/actions/workflows/release.yml/badge.svg)
 
 Shared components for the [NUKE build system](https://nuke.build/).
 
 Read more about shared components in the [official docs.](https://nuke.build/docs/sharing/build-components/)
-
-- [Usage](#usage)
-- [Build](#build)
 
 ## Usage
 

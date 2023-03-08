@@ -7,5 +7,5 @@ public interface IHasSolution : INukeBuild
 {
     [Solution]
     [Required]
-    Solution Solution => TryGetValue(() => Solution)!
+    Solution Solution => TryGetValue(() => Solution)!;
 }

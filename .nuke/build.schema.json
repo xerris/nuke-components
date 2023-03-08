@@ -46,9 +46,6 @@
           "type": "boolean",
           "description": "Ignore unreachable sources during Restore"
         },
-        "LintExclude": {
-          "type": "string"
-        },
         "NoLogo": {
           "type": "boolean",
           "description": "Disables displaying the NUKE logo"

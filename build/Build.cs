@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Nuke.Common;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
@@ -33,8 +34,6 @@ class Build : NukeBuild,
     readonly Solution Solution;
     Solution IHasSolution.Solution => Solution;
 
-    GitVersion GitVersion => FromComponent<IHasVersioning>().Versioning;
-
     Target Clean => _ => _
         .Before<IRestore>()
         .Executes(() =>
@@ -49,6 +48,8 @@ class Build : NukeBuild,
         .Inherit<ICompile>()
         .DependsOn(Clean)
         .DependsOn<ILint>(x => x.Lint);
+
+    public IEnumerable<string> ExcludedLintPaths => Enumerable.Empty<string>();
 
     bool IReportCoverage.CreateCoverageHtmlReport => true;
 

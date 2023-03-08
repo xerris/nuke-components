@@ -7,7 +7,6 @@ using Xerris.Nuke.Components;
     GitHubActionsImage.UbuntuLatest,
     GitHubActionsImage.MacOsLatest,
     FetchDepth = 0,
-    OnPushBranchesIgnore = new[] { "main", "release/v*" },
     OnPullRequestBranches = new[] { "main" },
     PublishArtifacts = true,
     InvokedTargets = new[] { nameof(ITest.Test), nameof(IPack.Pack) },

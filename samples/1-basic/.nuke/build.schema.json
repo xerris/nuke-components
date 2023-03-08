@@ -77,7 +77,10 @@
             "enum": [
               "Clean",
               "Compile",
-              "Restore"
+              "FixLint",
+              "Lint",
+              "Restore",
+              "RestoreTools"
             ]
           }
         },
@@ -93,7 +96,10 @@
             "enum": [
               "Clean",
               "Compile",
-              "Restore"
+              "FixLint",
+              "Lint",
+              "Restore",
+              "RestoreTools"
             ]
           }
         },

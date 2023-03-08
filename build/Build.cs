@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Nuke.Common;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.GitVersion;
 using Xerris.Nuke.Components;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -11,6 +12,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 class Build : NukeBuild,
     IHasGitRepository,
+    IHasVersioning,
     IRestore,
     ILint,
     ICompile,
@@ -31,14 +33,16 @@ class Build : NukeBuild,
     readonly Solution Solution;
     Solution IHasSolution.Solution => Solution;
 
+    GitVersion GitVersion => FromComponent<IHasVersioning>().Versioning;
+
     Target Clean => _ => _
         .Before<IRestore>()
         .Executes(() =>
         {
             DotNetClean(_ => _
-                .SetProject(((IHasSolution) this).Solution));
+                .SetProject(Solution));
 
-            EnsureCleanDirectory(((IHasArtifacts) this).ArtifactsDirectory);
+            EnsureCleanDirectory(FromComponent<IHasArtifacts>().ArtifactsDirectory);
         });
 
     Target ICompile.Compile => _ => _
@@ -49,4 +53,8 @@ class Build : NukeBuild,
     bool IReportCoverage.CreateCoverageHtmlReport => true;
 
     IEnumerable<Project> ITest.TestProjects => Partition.GetCurrent(Solution.GetProjects("*.Tests"));
+
+    T FromComponent<T>()
+        where T : INukeBuild
+        => (T) (object) this;
 }

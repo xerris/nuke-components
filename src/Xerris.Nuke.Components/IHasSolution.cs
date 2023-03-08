@@ -8,5 +8,5 @@ public interface IHasSolution : INukeBuild
     [Solution]
     [Required]
     Solution Solution => TryGetValue(() => Solution)
-        ?? throw new InvalidOperationException("No solution file was found for this build project");
+        ?? throw new BuildException("No solution file was found");
 }

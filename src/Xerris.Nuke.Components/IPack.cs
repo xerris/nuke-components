@@ -29,9 +29,10 @@ public interface IPack : ICompile, IHasArtifacts, IHasGitRepository
         .SetConfiguration(Configuration)
         .SetNoBuild(SucceededTargets.Contains(Compile))
         .SetProperty("PackageOutputPath", PackagesDirectory)
-        .SetRepositoryUrl(GitRepository.HttpsUrl);
-    //.WhenNotNull(this as IHasGitRepository, (_, o) => _
-    //    .SetRepositoryUrl(o!.GitRepository.HttpsUrl));
+        .WhenNotNull(this as IHasGitRepository, (_, o) => _
+            .SetRepositoryUrl(o!.GitRepository.HttpsUrl))
+        .WhenNotNull(this as IHasVersioning, (_, o) => _
+            .SetVersion(o!.Versioning.NuGetVersionV2));
 
     Configure<DotNetPackSettings> PackSettings => _ => _;
 }

@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Nuke.Common;
+using Nuke.Common.CI;
+using Nuke.Common.Git;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.GitVersion;
 using Xerris.Nuke.Components;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -11,7 +13,9 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 // ReSharper disable RedundantExtendsListEntry
 // ReSharper disable InconsistentNaming
 
-class Build : NukeBuild,
+[DotNetVerbosityMapping]
+[ShutdownDotNetAfterServerBuild]
+partial class Build : NukeBuild,
     IHasGitRepository,
     IHasVersioning,
     IRestore,
@@ -44,16 +48,28 @@ class Build : NukeBuild,
             EnsureCleanDirectory(FromComponent<IHasArtifacts>().ArtifactsDirectory);
         });
 
+    public IEnumerable<string> ExcludedLintPaths => Enumerable.Empty<string>();
+
     Target ICompile.Compile => _ => _
         .Inherit<ICompile>()
         .DependsOn(Clean)
         .DependsOn<ILint>(x => x.Lint);
 
-    public IEnumerable<string> ExcludedLintPaths => Enumerable.Empty<string>();
-
     bool IReportCoverage.CreateCoverageHtmlReport => true;
 
     IEnumerable<Project> ITest.TestProjects => Partition.GetCurrent(Solution.GetProjects("*.Tests"));
+
+    Configure<DotNetPublishSettings> ICompile.PublishSettings => _ => _
+        .When(!ScheduledTargets.Contains(((IPush) this).Push), _ => _
+            .ClearProperties());
+
+    Target IPush.Push => _ => _
+        .Inherit<IPush>()
+        .Consumes(FromComponent<IPush>().Pack)
+        .Requires(() =>
+            FromComponent<IPush>().GitRepository.IsOnMainBranch() ||
+            FromComponent<IPush>().GitRepository.IsOnReleaseBranch())
+        .WhenSkipped(DependencyBehavior.Execute);
 
     T FromComponent<T>()
         where T : INukeBuild

@@ -18,7 +18,7 @@ name: continuous
 
 on:
   push:
-    branches:
+    branches-ignore:
       - main
       - 'release/v*'
   pull_request:

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{383918FC-A660-4AD2-AC36-4A93CF286BD2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xerris.Nuke.Components", "src\Xerris.Nuke.Components\Xerris.Nuke.Components.csproj", "{6532F8B0-D1AF-4D8F-9D61-C8337111A76D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xerris.Nuke.Components", "src\Components\Xerris.Nuke.Components.csproj", "{6532F8B0-D1AF-4D8F-9D61-C8337111A76D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{0C7A72F0-C1C0-4FFC-AE9A-F5C6F41A5780}"
 EndProject
@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{5E407C1E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{DFE985A6-4EFE-4F30-BF2A-70ACE7A84369}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xerris.Nuke.Components.Tests", "tests\Xerris.Nuke.Components\Xerris.Nuke.Components.Tests.csproj", "{4B74BF65-FC73-44B1-898D-F1120C3CA5A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xerris.Nuke.Components.Tests", "tests\Components\Xerris.Nuke.Components.Tests.csproj", "{4B74BF65-FC73-44B1-898D-F1120C3CA5A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

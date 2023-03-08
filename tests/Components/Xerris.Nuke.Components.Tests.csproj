@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Xerris.Nuke.Components\Xerris.Nuke.Components.csproj" />
+    <ProjectReference Include="..\..\src\Components\Xerris.Nuke.Components.csproj" />
   </ItemGroup>
 
 </Project>

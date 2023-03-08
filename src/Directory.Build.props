@@ -1,0 +1,49 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <LangVersion>preview</LangVersion>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <NoWarn>CS1591;NU5129;NU5118</NoWarn>
+    <!-- Remove when deprecating netcoreapp2.1 -->
+    <NoWarn>$(NoWarn);NETSDK1138</NoWarn>
+    <DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS</DefineConstants>
+    <DebugType>embedded</DebugType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>Shared components for the NUKE build system.</Description>
+    <Authors>Xerris Inc.</Authors>
+    <Copyright>Copyright $([System.DateTime]::Now.Year) Xerris Inc.</Copyright>
+    <PackageTags>build-automation continuous-integration tools nuke</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/xerris/nuke-components</PackageProjectUrl>
+    <PackageIcon>icon.png</PackageIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('netstandard')) OR $(TargetFramework.StartsWith('netcoreapp'))">
+    <DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('Tests'))">
+    <IsPackable>False</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsPackable)' != 'False'">
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup Condition="">
+    <None Include="..\..\icon.png" Pack="true" PackagePath="" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(MSBuildProjectName.EndsWith('Tests'))">
+    <PackageReference Include="coverlet.msbuild" Version="3.2.0" />
+    <PackageReference Include="FluentAssertions" Version="6.8.0"/>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1"/>
+    <PackageReference Include="xunit" Version="2.4.2"/>
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5"/>
+  </ItemGroup>
+
+</Project>

@@ -1,4 +1,4 @@
-﻿namespace Xerris.Nuke.Components;
+namespace Xerris.Nuke.Components;
 
 public static class ToolSettingsExtensions
 {

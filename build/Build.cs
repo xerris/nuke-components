@@ -14,10 +14,10 @@ class Build : NukeBuild,
     IRestore,
     ILint,
     ICompile,
-    //IPack, // TODO
+    IPack,
     ITest,
     IReportCoverage
-    //IPublish // TODO
+//IPublish // TODO
 {
     /// Support plugins are available for:
     ///   - JetBrains ReSharper        https://nuke.build/resharper
@@ -25,7 +25,7 @@ class Build : NukeBuild,
     ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
     ///   - Microsoft VSCode           https://nuke.build/vscode
 
-    public static int Main() => Execute<Build>(x => ((ICompile)x).Compile);
+    public static int Main() => Execute<Build>(x => ((ICompile) x).Compile);
 
     [Solution]
     readonly Solution Solution;

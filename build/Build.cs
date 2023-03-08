@@ -16,10 +16,10 @@ class Build : NukeBuild,
     IRestore,
     ILint,
     ICompile,
-    IPack,
     ITest,
-    IReportCoverage
-//IPublish // TODO
+    IReportCoverage,
+    IPack,
+    IPush
 {
     /// Support plugins are available for:
     ///   - JetBrains ReSharper        https://nuke.build/resharper

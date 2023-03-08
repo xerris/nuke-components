@@ -1,5 +1,4 @@
 using Nuke.Common;
-using Nuke.Common.CI.AzurePipelines;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
@@ -38,20 +37,9 @@ public interface ITest : IHasArtifacts, ICompile
             }
             finally
             {
-                ReportTestResults();
                 ReportTestCount();
             }
         });
-
-    void ReportTestResults()
-    {
-        // TODO: Azure pipelines?
-        TestResultDirectory.GlobFiles("*.trx").ForEach(x =>
-            AzurePipelines.Instance?.PublishTestResults(
-                type: AzurePipelinesTestResultsType.VSTest,
-                title: $"{Path.GetFileNameWithoutExtension(x)} ({AzurePipelines.Instance.StageDisplayName})",
-                files: new string[] { x }));
-    }
 
     void ReportTestCount()
     {

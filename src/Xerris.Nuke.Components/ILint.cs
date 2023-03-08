@@ -6,7 +6,7 @@ namespace Xerris.Nuke.Components;
 public interface ILint : ITools, IHasSolution
 {
     [Parameter]
-    string? LintExclude => TryGetValue(() => LintExclude);
+    string? LintExclude => TryGetValue(() => LintExclude); // todo: make this an array of strings
 
     // TODO: Exclusions as required property?
 

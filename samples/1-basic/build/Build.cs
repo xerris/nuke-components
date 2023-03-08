@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Nuke.Common;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
@@ -12,7 +14,7 @@ class Build : NukeBuild, ICompile
     ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
     ///   - Microsoft VSCode           https://nuke.build/vscode
 
-    public static int Main() => Execute<Build>(x => ((ICompile)x).Compile);
+    public static int Main() => Execute<Build>(x => ((ICompile) x).Compile);
 
     // The path to the solution file must be explicitly specified because this project is nested below the main build
     // project for the repository. Normally, you don't have to specify a relative path to the solution file.
@@ -28,4 +30,7 @@ class Build : NukeBuild, ICompile
                 .SetProject(Solution));
         });
 
+    Target ICompile.Compile => _ => _
+        .Inherit<ICompile>()
+        .DependsOn(Clean);
 }

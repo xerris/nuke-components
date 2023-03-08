@@ -42,6 +42,10 @@
             "VSCode"
           ]
         },
+        "IgnoreFailedSources": {
+          "type": "boolean",
+          "description": "Ignore unreachable sources during Restore"
+        },
         "LintExclude": {
           "type": "string"
         },

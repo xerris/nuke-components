@@ -1,4 +1,3 @@
-﻿using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.Tooling;
@@ -6,7 +5,6 @@ using Nuke.Common.Tools.ReportGenerator;
 
 namespace Xerris.Nuke.Components;
 
-[PublicAPI]
 public interface IReportCoverage : ITest, IHasReports, IHasGitRepository
 {
     bool CreateCoverageHtmlReport { get; }
@@ -30,8 +28,8 @@ public interface IReportCoverage : ITest, IHasReports, IHasGitRepository
                 .Apply(ReportGeneratorSettings));
 
             CompressionTasks.CompressZip(
-                directory: CoverageReportDirectory,
-                archiveFile: CoverageReportArchive,
+                CoverageReportDirectory,
+                CoverageReportArchive,
                 fileMode: FileMode.Create);
         });
 

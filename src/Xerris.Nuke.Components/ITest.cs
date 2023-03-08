@@ -1,8 +1,6 @@
-﻿using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.CI.AzurePipelines;
 using Nuke.Common.CI.GitHubActions;
-using Nuke.Common.CI.TeamCity;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
@@ -13,15 +11,16 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 namespace Xerris.Nuke.Components;
 
-[PublicAPI]
-public interface ITest : IHasArtifacts, IHasConfiguration // ICompile, IRestore
+public interface ITest : IHasArtifacts, ICompile
 {
     AbsolutePath TestResultDirectory => ArtifactsDirectory / "test-results";
+
+    IEnumerable<Project> TestProjects { get; }
 
     int TestDegreeOfParallelism => 1;
 
     Target Test => _ => _
-        //.DependsOn(Compile)
+        .DependsOn(Compile)
         .Produces(TestResultDirectory / "*.trx")
         .Produces(TestResultDirectory / "*.xml")
         .Executes(() =>
@@ -78,34 +77,26 @@ public interface ITest : IHasArtifacts, IHasConfiguration // ICompile, IRestore
 
     sealed Configure<DotNetTestSettings> TestSettingsBase => _ => _
         .SetConfiguration(Configuration)
-        //.SetNoBuild(SucceededTargets.Contains(Compile))
+        .SetNoBuild(SucceededTargets.Contains(Compile))
         .ResetVerbosity()
         .SetResultsDirectory(TestResultDirectory)
-        //.When(InvokedTargets.Contains((this as IReportCoverage)?.ReportCoverage) || IsServerBuild, _ => _
-        .EnableCollectCoverage()
-        .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
-        .SetExcludeByFile("*.Generated.cs")
-        .When(IsServerBuild, _ => _
-            .EnableUseSourceLink());
-    //);
+        .When(InvokedTargets.Contains((this as IReportCoverage)?.ReportCoverage) || IsServerBuild, _ => _
+            .EnableCollectCoverage()
+            .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
+            .SetExcludeByFile("*.Generated.cs")
+            .When(IsServerBuild, _ => _
+                .EnableUseSourceLink()));
 
     sealed Configure<DotNetTestSettings, Project> TestProjectSettingsBase => (_, v) => _
         .SetProjectFile(v)
         // https://github.com/Tyrrrz/GitHubActionsTestLogger
         .When(GitHubActions.Instance is not null && v.HasPackageReference("GitHubActionsTestLogger"), _ => _
             .AddLoggers("GitHubActions;report-warnings=false"))
-        // https://github.com/JetBrains/TeamCity.VSTest.TestAdapter
-        .When(TeamCity.Instance is not null && v.HasPackageReference("TeamCity.VSTest.TestAdapter"), _ => _
-            .AddLoggers("TeamCity")
-            // https://github.com/xunit/visualstudio.xunit/pull/108
-            .AddRunSetting("RunConfiguration.NoAutoReporters", bool.TrueString))
         .AddLoggers($"trx;LogFileName={v.Name}.trx")
         .When(InvokedTargets.Contains((this as IReportCoverage)?.ReportCoverage) || IsServerBuild, _ => _
             .SetCoverletOutput(TestResultDirectory / $"{v.Name}.xml"));
 
     Configure<DotNetTestSettings> TestSettings => _ => _;
+
     Configure<DotNetTestSettings, Project> TestProjectSettings => (_, v) => _;
-
-    IEnumerable<Project> TestProjects { get; }
-
 }

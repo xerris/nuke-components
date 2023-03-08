@@ -7,6 +7,12 @@
       "commands": [
         "dotnet-format"
       ]
+    },
+    "nuke.globaltool": {
+      "version": "6.3.0",
+      "commands": [
+        "nuke"
+      ]
     }
   }
 }

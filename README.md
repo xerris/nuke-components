@@ -4,14 +4,55 @@ Shared components for the [NUKE build system](https://nuke.build/).
 
 Read more about shared components in the [official docs.](https://nuke.build/docs/sharing/build-components/)
 
+- [Usage](#usage)
+- [Build](#build)
+
+## Usage
+
+To use the shared components in your build, simply install the NuGet package:
+
+```powershell
+dotnet add package .\build\MyNukeBuild.csproj Xerris.Nuke.Components
+```
+
+See the [samples](./samples/) for examples of how to use these components in
+your build projects
+
 ## Build
 
 This project uses the NUKE build tool (naturally). NUKE builds can be invoked
 in the following ways:
 
-#### Script
+### NUKE global tool
 
-There are PowerShell, cmd, and bash scripts for invoking builds and build
+The preferred way to invoke NUKE builds is with the [global tool](https://nuke.build/docs/getting-started/setup.html).
+To install it, run the following command:
+
+```powershell
+dotnet tool install nuke.globaltool -g
+```
+
+Verify your installation by listing the available targets with this command:
+
+```powershell
+nuke --help
+```
+
+Build targets can now be run like so:
+
+```powershell
+nuke build
+nuke test
+nuke lint
+# etc.
+```
+
+> ℹ For added flavour, enable tab-completion for the global tool in your shell.
+> See the official docs for instructions [here](https://nuke.build/docs/global-tool/shell-completion/).
+
+### Scripts
+
+NUKE generates PowerShell, cmd, and bash scripts that invoke builds and build
 targets. To select a build target, specify it either as an argument or with the
 `--target` switch. For example:
 
@@ -19,37 +60,16 @@ targets. To select a build target, specify it either as an argument or with the
 ./build.ps1 # Run the default build
 ./build.ps1 test # Run the 'test' target
 ./build.ps1 --target test # Run the 'test' target
-./build.ps1 --help # Lists available targets
-```
-
-#### NUKE global tool
-
-The .NET tools manifest for this solution includes the [NUKE global
-tool](https://nuke.build/docs/getting-started/setup.html). You can install local
-tools with this command:
-
-```powershell
-dotnet tool restore
-```
-
-Then, targets can be run from a shell with the `nuke` command. This tool is
-very convenient as it enables tab completion of target names. For example:
-
-```powershell
-nuke build
-nuke test
-nuke integration-test
-# etc.
 ```
 
 ### Console app
 
-NUKE builds are pure C# console apps. So, to run a build you can just run the
+NUKE builds are pure C# console apps. So, to run a build you can run the
 `_build` project from your IDE, just as you would any other executable.
 
 ### IDE plugins
 
-These support plugins can invoke builds, and make working with NUKE easier:
+NUKE also provides plugins to invoke builds from your preferred IDE:
 
 - [Microsoft VisualStudio](https://nuke.build/visualstudio)
 - [Microsoft VSCode](https://nuke.build/vscode)

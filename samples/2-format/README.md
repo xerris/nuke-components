@@ -20,3 +20,22 @@ provides a target to fix the formatting:
 ```powershell
 nuke fix-format
 ```
+
+Since the default compile target depends on `IFormat`, the formatting target is
+run as part of the default build. This is entirely optional. For example, you
+could implement the `IFormat` without listing it as a dependency of the compile
+target. Then, the formatting commands (above) would still be available, but
+would not be run by default.
+
+```csharp
+// With dependency
+Target ICompile.Compile => _ => _
+    .Inherit<ICompile>()
+    .DependsOn(Clean)
+    .DependsOn<IFormat>(x => x.VerifyFormat);
+
+// Without dependency
+Target ICompile.Compile => _ => _
+    .Inherit<ICompile>()
+    .DependsOn(Clean);
+```

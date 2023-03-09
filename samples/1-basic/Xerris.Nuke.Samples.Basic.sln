@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.cspr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{484DA7EE-6F6D-42A3-99F7-3E4CF47CDA57}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xerris.Nuke.Sample.App", "src\App\Xerris.Nuke.Sample.App.csproj", "{9EF45647-E63E-4660-9FB1-FA78C8363B49}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{1A09AD05-6FBF-4C07-B015-B16904E4A9C7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xerris.Nuke.Samples.Basic.App", "src\App\Xerris.Nuke.Samples.Basic.App.csproj", "{17C05254-EC56-479E-8E08-A16DAB6A3A20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,16 +19,16 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E2571815-36C0-4D91-9F40-2AAE876D6A1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E2571815-36C0-4D91-9F40-2AAE876D6A1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9EF45647-E63E-4660-9FB1-FA78C8363B49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9EF45647-E63E-4660-9FB1-FA78C8363B49}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9EF45647-E63E-4660-9FB1-FA78C8363B49}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9EF45647-E63E-4660-9FB1-FA78C8363B49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17C05254-EC56-479E-8E08-A16DAB6A3A20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17C05254-EC56-479E-8E08-A16DAB6A3A20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17C05254-EC56-479E-8E08-A16DAB6A3A20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17C05254-EC56-479E-8E08-A16DAB6A3A20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E2571815-36C0-4D91-9F40-2AAE876D6A1A} = {1A09AD05-6FBF-4C07-B015-B16904E4A9C7}
-		{9EF45647-E63E-4660-9FB1-FA78C8363B49} = {484DA7EE-6F6D-42A3-99F7-3E4CF47CDA57}
+		{17C05254-EC56-479E-8E08-A16DAB6A3A20} = {484DA7EE-6F6D-42A3-99F7-3E4CF47CDA57}
 	EndGlobalSection
 EndGlobal

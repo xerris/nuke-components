@@ -84,14 +84,13 @@
             "enum": [
               "Clean",
               "Compile",
-              "FixLint",
-              "Lint",
+              "Format",
               "Pack",
               "Push",
               "ReportCoverage",
               "Restore",
-              "RestoreTools",
-              "Test"
+              "Test",
+              "VerifyFormat"
             ]
           }
         },
@@ -107,14 +106,13 @@
             "enum": [
               "Clean",
               "Compile",
-              "FixLint",
-              "Lint",
+              "Format",
               "Pack",
               "Push",
               "ReportCoverage",
               "Restore",
-              "RestoreTools",
-              "Test"
+              "Test",
+              "VerifyFormat"
             ]
           }
         },

@@ -1,4 +1,4 @@
 {
   "$schema": "./build.schema.json",
-  "Solution": "Xerris.Nuke.Test.sln"
+  "Solution": "Xerris.Nuke.Samples.Basic.sln"
 }

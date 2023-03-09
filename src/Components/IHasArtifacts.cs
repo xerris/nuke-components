@@ -5,5 +5,8 @@ namespace Xerris.Nuke.Components;
 
 public interface IHasArtifacts : INukeBuild
 {
+    /// <summary>
+    /// The output directory for build artifacts.
+    /// </summary>
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
 }

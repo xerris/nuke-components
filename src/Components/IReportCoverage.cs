@@ -15,7 +15,6 @@ public interface IReportCoverage : ITest, IHasReports, IHasGitRepository
 
     Target ReportCoverage => _ => _
         .DependsOn(Test)
-        .TryAfter<ITest>()
         .Consumes(Test)
         .Produces(CoverageReportArchive)
         .Executes(() =>

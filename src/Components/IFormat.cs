@@ -20,6 +20,7 @@ public interface IFormat : IHasSolution
         : string.Empty;
 
     Target VerifyFormat => _ => _
+        .TryBefore<ICompile>()
         .Executes(() =>
         {
             DotNet($"format whitespace {Solution} " +

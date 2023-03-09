@@ -13,6 +13,7 @@ public interface IPack : ICompile, IHasArtifacts, IHasGitRepository
 
     Target Pack => _ => _
         .DependsOn(Compile)
+        .TryAfter<ITest>()
         .Produces(PackagesDirectory / "*.nupkg")
         .Executes(() =>
         {

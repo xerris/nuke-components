@@ -19,7 +19,7 @@ partial class Build : NukeBuild,
     IHasGitRepository,
     IHasVersioning,
     IRestore,
-    ILint,
+    IFormat,
     ICompile,
     ITest,
     IReportCoverage,
@@ -48,12 +48,12 @@ partial class Build : NukeBuild,
             EnsureCleanDirectory(FromComponent<IHasArtifacts>().ArtifactsDirectory);
         });
 
-    public IEnumerable<string> ExcludedLintPaths => Enumerable.Empty<string>();
+    public IEnumerable<string> ExcludedFormatPaths => Enumerable.Empty<string>();
 
     Target ICompile.Compile => _ => _
         .Inherit<ICompile>()
         .DependsOn(Clean)
-        .DependsOn<ILint>(x => x.Lint);
+        .DependsOn<IFormat>(x => x.VerifyFormat);
 
     bool IReportCoverage.CreateCoverageHtmlReport => true;
 

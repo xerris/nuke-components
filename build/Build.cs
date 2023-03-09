@@ -51,6 +51,8 @@ partial class Build : NukeBuild,
 
     public IEnumerable<string> ExcludedFormatPaths => Enumerable.Empty<string>();
 
+    public bool RunFormatAnalyzers => true;
+
     Target ICompile.Compile => _ => _
         .Inherit<ICompile>()
         .DependsOn(Clean)

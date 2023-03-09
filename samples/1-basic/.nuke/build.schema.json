@@ -77,16 +77,13 @@
             "enum": [
               "Clean",
               "Compile",
-              "FixLint",
-              "Lint",
-              "Restore",
-              "RestoreTools"
+              "Restore"
             ]
           }
         },
         "Solution": {
           "type": "string",
-          "description": "Path to a solution file that is automatically loaded. Default is ./Xerris.Nuke.Sample.sln"
+          "description": "Path to a solution file that is automatically loaded. Default is ./Xerris.Nuke.Samples.Basic.sln"
         },
         "Target": {
           "type": "array",
@@ -96,10 +93,7 @@
             "enum": [
               "Clean",
               "Compile",
-              "FixLint",
-              "Lint",
-              "Restore",
-              "RestoreTools"
+              "Restore"
             ]
           }
         },

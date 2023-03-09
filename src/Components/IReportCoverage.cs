@@ -7,10 +7,19 @@ namespace Xerris.Nuke.Components;
 
 public interface IReportCoverage : ITest, IHasReports, IHasGitRepository
 {
+    /// <summary>
+    /// Whether or not to generate an HTML coverage report.
+    /// </summary>
     bool CreateCoverageHtmlReport { get; }
 
+    /// <summary>
+    /// The output directory for coverage reports.
+    /// </summary>
     string CoverageReportDirectory => ReportDirectory / "coverage-report";
 
+    /// <summary>
+    /// The path to the coverage report archive (.zip).
+    /// </summary>
     string CoverageReportArchive => Path.ChangeExtension(CoverageReportDirectory, ".zip");
 
     Target ReportCoverage => _ => _

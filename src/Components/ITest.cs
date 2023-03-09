@@ -12,6 +12,9 @@ namespace Xerris.Nuke.Components;
 
 public interface ITest : IHasArtifacts, ICompile
 {
+    /// <summary>
+    /// The test results output directory.
+    /// </summary>
     AbsolutePath TestResultDirectory => ArtifactsDirectory / "test-results";
 
     IEnumerable<Project> TestProjects { get; }

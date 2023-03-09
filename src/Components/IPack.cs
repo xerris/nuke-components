@@ -9,6 +9,9 @@ namespace Xerris.Nuke.Components;
 
 public interface IPack : ICompile, IHasArtifacts, IHasGitRepository
 {
+    /// <summary>
+    /// The output directory for NuGet packages.
+    /// </summary>
     AbsolutePath PackagesDirectory => ArtifactsDirectory / "packages";
 
     Target Pack => _ => _

@@ -6,6 +6,7 @@ using Nuke.Common.Git;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
+using Serilog;
 using Xerris.Nuke.Components;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -67,9 +68,14 @@ partial class Build : NukeBuild,
         .Inherit<IPush>()
         .Consumes(FromComponent<IPush>().Pack)
         .Requires(() =>
-            FromComponent<IPush>().GitRepository.IsOnMainBranch() ||
-            FromComponent<IPush>().GitRepository.IsOnReleaseBranch())
-        .WhenSkipped(DependencyBehavior.Execute);
+            FromComponent<IHasGitRepository>().GitRepository.IsOnMainBranch() ||
+            FromComponent<IHasGitRepository>().GitRepository.IsOnReleaseBranch() ||
+            FromComponent<IHasGitRepository>().GitRepository.Tags.Any())
+        .WhenSkipped(DependencyBehavior.Execute)
+        .Executes(() =>
+        {
+            Log.Information(FromComponent<IPush>().GitRepository.Tags.ToString());
+        });
 
     T FromComponent<T>()
         where T : INukeBuild

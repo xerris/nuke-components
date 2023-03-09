@@ -1,10 +1,8 @@
-using JetBrains.Annotations;
 using Nuke.Common;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 namespace Xerris.Nuke.Components;
 
-[PublicAPI]
 public interface ILint : ITools, IHasSolution
 {
     IEnumerable<string> ExcludedLintPaths { get; }
@@ -17,6 +15,7 @@ public interface ILint : ITools, IHasSolution
         .DependsOn(RestoreTools)
         .Executes(() =>
         {
+            // No fluent API support for this tool yet
             DotNet($"format whitespace {Solution} " +
                 "--verify-no-changes " +
                 $"{ExcludedPathsArgument}");
@@ -30,6 +29,7 @@ public interface ILint : ITools, IHasSolution
         .DependsOn(RestoreTools)
         .Executes(() =>
         {
+            // No fluent API support for this tool yet
             DotNet($"format whitespace {Solution} " +
                 $"{ExcludedPathsArgument}");
 

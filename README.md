@@ -40,7 +40,7 @@ Build targets can now be run like so:
 ```powershell
 nuke build
 nuke test
-nuke lint
+nuke verify-format
 # etc.
 ```
 

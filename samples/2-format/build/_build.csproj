@@ -10,6 +10,11 @@
     <NukeTelemetryVersion>1</NukeTelemetryVersion>
   </PropertyGroup>
 
+  <!-- Not usually necessary, prevents this project from being packed when the root solution is built -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Nuke.Common" Version="6.3.0" />
   </ItemGroup>

@@ -18,9 +18,6 @@ name: release
 
 on:
   push:
-    branches:
-      - main
-      - 'release/v*'
     tags:
       - 'v*'
 
@@ -43,7 +40,6 @@ jobs:
         run: ./build.cmd Test Pack Push
         env:
           NuGetApiKey: ${{ secrets.NUGET_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/upload-artifact@v3
         with:
           name: test-results

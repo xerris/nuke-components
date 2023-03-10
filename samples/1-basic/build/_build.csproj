@@ -12,7 +12,10 @@
 
   <ItemGroup>
     <PackageReference Include="Nuke.Common" Version="6.3.0" />
-    <PackageReference Include="Xerris.Nuke.Components" Version="0.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Components\Xerris.Nuke.Components.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 namespace Xerris.Nuke.Components;
 
-public interface IPush : IPack, ITest
+public interface IPush : IPack
 {
     [Parameter]
     string NuGetSource => TryGetValue(() => NuGetSource) ?? "https://api.nuget.org/v3/index.json";
@@ -16,7 +16,7 @@ public interface IPush : IPack, ITest
     string NuGetApiKey => TryGetValue(() => NuGetApiKey)!;
 
     Target Push => _ => _
-        .DependsOn(Test, Pack)
+        .DependsOn(Pack)
         .Requires(() => NuGetApiKey)
         .Executes(() =>
         {

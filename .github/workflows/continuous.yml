@@ -17,6 +17,10 @@
 name: continuous
 
 on:
+  push:
+    branches:
+      - main
+      - 'release/v*'
   pull_request:
     branches:
       - main
@@ -38,8 +42,6 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('global.json', 'source/**/*.csproj') }}
       - name: Run './build.cmd Test Pack'
         run: ./build.cmd Test Pack
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/upload-artifact@v3
         with:
           name: test-results
@@ -64,8 +66,6 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('global.json', 'source/**/*.csproj') }}
       - name: Run './build.cmd Test Pack'
         run: ./build.cmd Test Pack
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/upload-artifact@v3
         with:
           name: test-results
@@ -90,8 +90,6 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('global.json', 'source/**/*.csproj') }}
       - name: Run './build.cmd Test Pack'
         run: ./build.cmd Test Pack
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/upload-artifact@v3
         with:
           name: test-results

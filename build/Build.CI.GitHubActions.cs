@@ -8,21 +8,19 @@ using Xerris.Nuke.Components;
     GitHubActionsImage.MacOsLatest,
     FetchDepth = 0,
     OnPullRequestBranches = new[] { "main" },
+    OnPushBranches = new[] { "main", "release/v*" },
     PublishArtifacts = true,
     InvokedTargets = new[] { nameof(ITest.Test), nameof(IPack.Pack) },
-    CacheKeyFiles = new[] { "global.json", "source/**/*.csproj" },
-    EnableGitHubToken = true)]
+    CacheKeyFiles = new[] { "global.json", "source/**/*.csproj" })]
 // TODO: Package signing
 [GitHubActions(
     "release",
     GitHubActionsImage.UbuntuLatest,
     FetchDepth = 0,
-    OnPushBranches = new[] { "main", "release/v*" },
     OnPushTags = new[] { "v*" },
     PublishArtifacts = true,
     InvokedTargets = new[] { nameof(ITest.Test), nameof(IPack.Pack), nameof(IPush.Push) },
     CacheKeyFiles = new[] { "global.json", "source/**/*.csproj" },
-    EnableGitHubToken = true,
     ImportSecrets = new[] { nameof(IPush.NuGetApiKey) })]
 partial class Build
 {

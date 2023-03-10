@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace></RootNamespace>
     <NoWarn>CS0649;CS0169</NoWarn>
     <NukeRootDirectory>..</NukeRootDirectory>
@@ -10,9 +10,17 @@
     <NukeTelemetryVersion>1</NukeTelemetryVersion>
   </PropertyGroup>
 
+  <!-- Not usually necessary, prevents this project from being packed when the root solution is built -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Nuke.Common" Version="6.3.0" />
-    <PackageReference Include="Xerris.Nuke.Components" Version="0.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Components\Xerris.Nuke.Components.csproj" />
   </ItemGroup>
 
 </Project>

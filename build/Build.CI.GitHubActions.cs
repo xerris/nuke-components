@@ -11,7 +11,7 @@ using Xerris.Nuke.Components;
     OnPushBranches = new[] { "main", "release/v*" },
     PublishArtifacts = true,
     InvokedTargets = new[] { nameof(ITest.Test), nameof(IPack.Pack) },
-    CacheKeyFiles = new[] { "global.json", "source/**/*.csproj" })]
+    CacheKeyFiles = new[] { "global.json", "src/**/*.csproj" })]
 // TODO: Package signing
 [GitHubActions(
     "release",
@@ -20,7 +20,7 @@ using Xerris.Nuke.Components;
     OnPushTags = new[] { "v*" },
     PublishArtifacts = true,
     InvokedTargets = new[] { nameof(ITest.Test), nameof(IPack.Pack), nameof(IPush.Push) },
-    CacheKeyFiles = new[] { "global.json", "source/**/*.csproj" },
+    CacheKeyFiles = new[] { "global.json", "src/**/*.csproj" },
     ImportSecrets = new[] { nameof(IPush.NuGetApiKey) })]
 partial class Build
 {

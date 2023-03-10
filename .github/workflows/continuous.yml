@@ -39,7 +39,7 @@ jobs:
           path: |
             .nuke/temp
             ~/.nuget/packages
-          key: ${{ runner.os }}-${{ hashFiles('global.json', 'source/**/*.csproj') }}
+          key: ${{ runner.os }}-${{ hashFiles('global.json', 'src/**/*.csproj') }}
       - name: Run './build.cmd Test Pack'
         run: ./build.cmd Test Pack
       - uses: actions/upload-artifact@v3
@@ -63,7 +63,7 @@ jobs:
           path: |
             .nuke/temp
             ~/.nuget/packages
-          key: ${{ runner.os }}-${{ hashFiles('global.json', 'source/**/*.csproj') }}
+          key: ${{ runner.os }}-${{ hashFiles('global.json', 'src/**/*.csproj') }}
       - name: Run './build.cmd Test Pack'
         run: ./build.cmd Test Pack
       - uses: actions/upload-artifact@v3
@@ -87,7 +87,7 @@ jobs:
           path: |
             .nuke/temp
             ~/.nuget/packages
-          key: ${{ runner.os }}-${{ hashFiles('global.json', 'source/**/*.csproj') }}
+          key: ${{ runner.os }}-${{ hashFiles('global.json', 'src/**/*.csproj') }}
       - name: Run './build.cmd Test Pack'
         run: ./build.cmd Test Pack
       - uses: actions/upload-artifact@v3

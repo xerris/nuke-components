@@ -1,4 +1,5 @@
 using Nuke.Common;
+using Nuke.Common.CI.AzurePipelines;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
@@ -17,6 +18,9 @@ public interface ITest : IHasArtifacts, ICompile
     /// </summary>
     AbsolutePath TestResultDirectory => ArtifactsDirectory / "test-results";
 
+    /// <summary>
+    /// The collection of projects that contain tests.
+    /// </summary>
     IEnumerable<Project> TestProjects { get; }
 
     int TestDegreeOfParallelism => 1;
@@ -40,9 +44,19 @@ public interface ITest : IHasArtifacts, ICompile
             }
             finally
             {
+                ReportTestResults();
                 ReportTestCount();
             }
         });
+
+    void ReportTestResults()
+    {
+        TestResultDirectory.GlobFiles("*.trx").ForEach(x =>
+            AzurePipelines.Instance?.PublishTestResults(
+                type: AzurePipelinesTestResultsType.VSTest,
+                title: $"{Path.GetFileNameWithoutExtension(x)} ({AzurePipelines.Instance.StageDisplayName})",
+                files: new string[] { x }));
+    }
 
     void ReportTestCount()
     {

@@ -10,7 +10,7 @@ using Xerris.Nuke.Components;
     OnPullRequestBranches = new[] { "main" },
     OnPushBranches = new[] { "main", "release/v*" },
     PublishArtifacts = true,
-    InvokedTargets = new[] { nameof(ITest.Test), nameof(IPack.Pack) },
+    InvokedTargets = new[] { nameof(ITest.Test) },
     CacheKeyFiles = new[] { "global.json", "src/**/*.csproj" })]
 // TODO: Package signing
 [GitHubActions(

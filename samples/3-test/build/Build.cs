@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using Nuke.Common;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.Tools.DotNet;
 using Xerris.Nuke.Components;
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 // ReSharper disable RedundantExtendsListEntry
 
@@ -22,18 +20,6 @@ class Build : NukeBuild, ICompile, ITest, IReportCoverage
     [Solution("./Xerris.Nuke.Samples.Test.sln")]
     readonly Solution Solution;
     Solution IHasSolution.Solution => Solution;
-
-    Target Clean => _ => _
-        .Before<IRestore>()
-        .Executes(() =>
-        {
-            DotNetClean(_ => _
-                .SetProject(Solution));
-        });
-
-    Target ICompile.Compile => _ => _
-        .Inherit<ICompile>()
-        .DependsOn(Clean);
 
     public IEnumerable<Project> TestProjects => Solution.GetProjects("*.Tests");
 

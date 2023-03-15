@@ -38,7 +38,7 @@ nuke --help
 Build targets can now be run like so:
 
 ```powershell
-nuke build
+nuke compile
 nuke test
 nuke verify-format
 # etc.

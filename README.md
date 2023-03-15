@@ -1,4 +1,4 @@
-# nuke-components | ![release](https://github.com/xerris/nuke-components/actions/workflows/release.yml/badge.svg)
+# nuke-components | [![continuous](https://github.com/xerris/nuke-components/actions/workflows/continuous.yml/badge.svg)](https://github.com/xerris/nuke-components/actions/workflows/continuous.yml) ![release](https://github.com/xerris/nuke-components/actions/workflows/release.yml/badge.svg)
 
 Shared components for the [NUKE build system](https://nuke.build/).
 

@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Nuke.Common;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.Tools.DotNet;
 using Xerris.Nuke.Components;
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 class Build : NukeBuild, IFormat, ICompile
 {
@@ -22,18 +20,9 @@ class Build : NukeBuild, IFormat, ICompile
     readonly Solution Solution;
     Solution IHasSolution.Solution => Solution;
 
-    Target Clean => _ => _
-        .Before<IRestore>()
-        .Executes(() =>
-        {
-            DotNetClean(_ => _
-                .SetProject(Solution));
-        });
-
     public IEnumerable<string> ExcludedFormatPaths => Enumerable.Empty<string>();
 
     Target ICompile.Compile => _ => _
         .Inherit<ICompile>()
-        .DependsOn(Clean)
         .DependsOn<IFormat>(x => x.VerifyFormat);
 }

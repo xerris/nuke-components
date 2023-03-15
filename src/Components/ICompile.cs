@@ -3,12 +3,14 @@ using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Utilities.Collections;
+using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 namespace Xerris.Nuke.Components;
 
-public interface ICompile : IRestore, IHasConfiguration
+public interface ICompile : IRestore, IClean, IHasConfiguration
 {
     Target Compile => _ => _
+        .DependsOn(Clean)
         .DependsOn(Restore)
         .WhenSkipped(DependencyBehavior.Skip)
         .Executes(() =>
@@ -17,11 +19,11 @@ public interface ICompile : IRestore, IHasConfiguration
                 .WhenNotNull(this as IHasVersioning, (_, o) => _
                     .AddPair("Version", o!.Versioning.FullSemVer)));
 
-            DotNetTasks.DotNetBuild(_ => _
+            DotNetBuild(_ => _
                 .Apply(CompileSettingsBase)
                 .Apply(CompileSettings));
 
-            DotNetTasks.DotNetPublish(_ => _
+            DotNetPublish(_ => _
                     .Apply(PublishSettingsBase)
                     .Apply(PublishSettings)
                     .CombineWith(PublishConfigurations, (_, v) => _.SetProject((string) v.Project)
@@ -39,8 +41,8 @@ public interface ICompile : IRestore, IHasConfiguration
             .SetRepositoryUrl(o!.GitRepository.HttpsUrl))
         .WhenNotNull(this as IHasVersioning, (_, o) => _
             .SetAssemblyVersion(o!.Versioning.AssemblySemVer)
-            .SetFileVersion(o!.Versioning.AssemblySemFileVer)
-            .SetInformationalVersion(o!.Versioning.InformationalVersion));
+            .SetFileVersion(o.Versioning.AssemblySemFileVer)
+            .SetInformationalVersion(o.Versioning.InformationalVersion));
 
     sealed Configure<DotNetPublishSettings> PublishSettingsBase => _ => _
         .SetConfiguration(Configuration)
@@ -52,8 +54,8 @@ public interface ICompile : IRestore, IHasConfiguration
             .SetRepositoryUrl(o!.GitRepository.HttpsUrl))
         .WhenNotNull(this as IHasVersioning, (_, o) => _
             .SetAssemblyVersion(o!.Versioning.AssemblySemVer)
-            .SetFileVersion(o!.Versioning.AssemblySemFileVer)
-            .SetInformationalVersion(o!.Versioning.InformationalVersion));
+            .SetFileVersion(o.Versioning.AssemblySemFileVer)
+            .SetInformationalVersion(o.Versioning.InformationalVersion));
 
     Configure<DotNetBuildSettings> CompileSettings => _ => _;
     Configure<DotNetPublishSettings> PublishSettings => _ => _;

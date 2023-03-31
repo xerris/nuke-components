@@ -12,8 +12,17 @@ To use the shared components in your build, simply install the NuGet package:
 dotnet add package .\build\MyNukeBuild.csproj Xerris.Nuke.Components
 ```
 
+> ℹ In your build project, you'll want to keep or add an explicit
+> package reference
+> to `Nuke.Common`. This will ensure you keep the project organization provided
+> by the NUKE MSBuild targets:
+>
+> ```powershell
+> dotnet add package .\build\MyNukeBuild.csproj Nuke.Common
+> ```
+
 See the [samples](./samples/) for examples of how to use these components in
-your build projects
+your build projects.
 
 ## Build
 
@@ -22,8 +31,8 @@ in the following ways:
 
 ### NUKE global tool
 
-The preferred way to invoke NUKE builds is with the [global tool](https://nuke.build/docs/getting-started/setup.html).
-To install it, run the following command:
+The preferred way to invoke NUKE builds is with the [global tool](https://nuke.build/docs/getting-started/setup.html). To install it, run the following
+command:
 
 ```powershell
 dotnet tool install nuke.globaltool -g

@@ -5,6 +5,16 @@ using Nuke.Common.Tools.ReportGenerator;
 
 namespace Xerris.Nuke.Components;
 
+/// <summary>
+/// Targets and configuration for creation of code coverage reports.
+/// <remarks>
+/// Requires the <see href="https://github.com/danielpalme/ReportGenerator">ReportGenerator</see> client tool to be
+/// installed in the build project, for example:
+/// <code>
+/// &lt;PackageDownload Include="ReportGenerator" version="[x.y.z]" /&gt;
+/// </code>
+/// </remarks>
+/// </summary>
 public interface IReportCoverage : ITest, IHasReports, IHasGitRepository
 {
     /// <summary>
@@ -22,6 +32,9 @@ public interface IReportCoverage : ITest, IHasReports, IHasGitRepository
     /// </summary>
     string CoverageReportArchive => Path.ChangeExtension(CoverageReportDirectory, ".zip");
 
+    /// <summary>
+    /// Create code coverage reports.
+    /// </summary>
     Target ReportCoverage => _ => _
         .DependsOn(Test)
         .Consumes(Test)
@@ -41,11 +54,17 @@ public interface IReportCoverage : ITest, IHasReports, IHasGitRepository
                 fileMode: FileMode.Create);
         });
 
+    /// <summary>
+    /// Settings for controlling the generation of code coverage reports.
+    /// </summary>
     sealed Configure<ReportGeneratorSettings> ReportGeneratorSettingsBase => _ => _
         .SetReports(TestResultDirectory / "*.xml")
         .SetReportTypes(ReportTypes.HtmlInline)
         .SetTargetDirectory(CoverageReportDirectory)
         .SetFramework("net6.0");
 
+    /// <summary>
+    /// Additional settings for controlling the generation of code coverage reports.
+    /// </summary>
     Configure<ReportGeneratorSettings> ReportGeneratorSettings => _ => _;
 }

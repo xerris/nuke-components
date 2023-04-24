@@ -1,12 +1,14 @@
 # nuke-components | [![continuous](https://github.com/xerris/nuke-components/actions/workflows/continuous.yml/badge.svg)](https://github.com/xerris/nuke-components/actions/workflows/continuous.yml) ![release](https://github.com/xerris/nuke-components/actions/workflows/release.yml/badge.svg)
 
-Shared components for the [NUKE build system](https://nuke.build/).
+Shared components for the [NUKE build system](https://nuke.build).
 
-Read more about shared components in the [official docs.](https://nuke.build/docs/sharing/build-components/)
+For more information about these components, see the [docs](https://https://xerris.github.io/nuke-components).
+
+To read more about shared components in general, see the [official NUKE docs](https://nuke.build/docs/sharing/build-components).
 
 ## Usage
 
-To use the shared components in your build, simply install the NuGet package:
+To use the shared components in your build, install the NuGet package:
 
 ```powershell
 dotnet add package .\build\MyNukeBuild.csproj Xerris.Nuke.Components

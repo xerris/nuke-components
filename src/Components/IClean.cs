@@ -5,6 +5,9 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 namespace Xerris.Nuke.Components;
 
+/// <summary>
+/// Provides targets and configuration for cleaning the current solution.
+/// </summary>
 public interface IClean : IHasSolution
 {
     /// <summary>
@@ -12,7 +15,11 @@ public interface IClean : IHasSolution
     /// </summary>
     bool CleanArtifactsDirectory => true;
 
+    /// <summary>
+    /// Clean the current solution with <c>dotnet clean</c>.
+    /// </summary>
     Target Clean => _ => _
+        .Description("Clean the solution and build artifacts")
         .Before<IRestore>()
         .Executes(() =>
         {

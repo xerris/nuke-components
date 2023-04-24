@@ -1,3 +1,4 @@
+using System.Globalization;
 using Nuke.Common;
 using Nuke.Common.CI.AzurePipelines;
 using Nuke.Common.CI.GitHubActions;
@@ -11,6 +12,9 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 namespace Xerris.Nuke.Components;
 
+/// <summary>
+/// Targets and configuration for executing unit tests in the solution.
+/// </summary>
 public interface ITest : IHasArtifacts, ICompile
 {
     /// <summary>
@@ -23,8 +27,14 @@ public interface ITest : IHasArtifacts, ICompile
     /// </summary>
     IEnumerable<Project> TestProjects { get; }
 
+    /// <summary>
+    /// The degree of parallelism to use when executing tests. Defaults to <c>1</c>.
+    /// </summary>
     int TestDegreeOfParallelism => 1;
 
+    /// <summary>
+    /// Execute unit tests in the solution using <c>dotnet test</c>.
+    /// </summary>
     Target Test => _ => _
         .DependsOn(Compile)
         .Produces(TestResultDirectory / "*.trx")
@@ -48,8 +58,8 @@ public interface ITest : IHasArtifacts, ICompile
                 ReportTestCount();
             }
         });
-
-    void ReportTestResults()
+    
+    private void ReportTestResults()
     {
         TestResultDirectory.GlobFiles("*.trx").ForEach(x =>
             AzurePipelines.Instance?.PublishTestResults(
@@ -57,14 +67,16 @@ public interface ITest : IHasArtifacts, ICompile
                 title: $"{Path.GetFileNameWithoutExtension(x)} ({AzurePipelines.Instance.StageDisplayName})",
                 files: new string[] { x }));
     }
-
-    void ReportTestCount()
+    
+    private void ReportTestCount()
     {
-        IEnumerable<string> GetOutcomes(AbsolutePath file)
-            => XmlTasks.XmlPeek(
+        static IEnumerable<string> GetOutcomes(AbsolutePath file)
+        {
+            return XmlTasks.XmlPeek(
                 file,
                 "/xn:TestRun/xn:Results/xn:UnitTestResult/@outcome",
                 ("xn", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010"));
+        }
 
         var resultFiles = TestResultDirectory.GlobFiles("*.trx");
         var outcomes = resultFiles.SelectMany(GetOutcomes).ToList();
@@ -74,12 +86,15 @@ public interface ITest : IHasArtifacts, ICompile
 
         ReportSummary(_ => _
             .When(failedTests > 0, _ => _
-                .AddPair("Failed", failedTests.ToString()))
-            .AddPair("Passed", passedTests.ToString())
+                .AddPair("Failed", failedTests.ToString(CultureInfo.InvariantCulture)))
+            .AddPair("Passed", passedTests.ToString(CultureInfo.InvariantCulture))
             .When(skippedTests > 0, _ => _
-                .AddPair("Skipped", skippedTests.ToString())));
+                .AddPair("Skipped", skippedTests.ToString(CultureInfo.InvariantCulture))));
     }
 
+    /// <summary>
+    /// Settings for controlling test execution behavior.
+    /// </summary>
     sealed Configure<DotNetTestSettings> TestSettingsBase => _ => _
         .SetConfiguration(Configuration)
         .SetNoBuild(SucceededTargets.Contains(Compile))
@@ -92,6 +107,9 @@ public interface ITest : IHasArtifacts, ICompile
             .When(IsServerBuild, _ => _
                 .EnableUseSourceLink()));
 
+    /// <summary>
+    /// Settings for configuring test projects.
+    /// </summary>
     sealed Configure<DotNetTestSettings, Project> TestProjectSettingsBase => (_, v) => _
         .SetProjectFile(v)
         // https://github.com/Tyrrrz/GitHubActionsTestLogger
@@ -101,7 +119,13 @@ public interface ITest : IHasArtifacts, ICompile
         .When(InvokedTargets.Contains((this as IReportCoverage)?.ReportCoverage) || IsServerBuild, _ => _
             .SetCoverletOutput(TestResultDirectory / $"{v.Name}.xml"));
 
+    /// <summary>
+    /// Additional settings for controlling test execution behavior.
+    /// </summary>
     Configure<DotNetTestSettings> TestSettings => _ => _;
 
+    /// <summary>
+    /// Additional settings for configuring test projects.
+    /// </summary>
     Configure<DotNetTestSettings, Project> TestProjectSettings => (_, v) => _;
 }

@@ -3,9 +3,7 @@
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-    <NoWarn>CS1591;NU5129;NU5118</NoWarn>
-    <!-- Remove when deprecating netcoreapp2.1 -->
-    <NoWarn>$(NoWarn);NETSDK1138</NoWarn>
+    <NoWarn>NU5129;NU5118</NoWarn>
     <DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS</DefineConstants>
     <DebugType>embedded</DebugType>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

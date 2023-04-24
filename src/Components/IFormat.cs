@@ -3,6 +3,9 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 namespace Xerris.Nuke.Components;
 
+/// <summary>
+/// Provides targets and configuration for verifying and applying code style preferences.
+/// </summary>
 public interface IFormat : IHasSolution
 {
     /// <summary>
@@ -19,7 +22,11 @@ public interface IFormat : IHasSolution
         ? $"--exclude {string.Join(' ', ExcludedFormatPaths)}"
         : string.Empty;
 
+    /// <summary>
+    /// Verify code style preferences using <c>dotnet format</c>.
+    /// </summary>
     Target VerifyFormat => _ => _
+        .Description("Verify code formatting for the solution.")
         .TryBefore<ICompile>()
         .Executes(() =>
         {
@@ -39,6 +46,9 @@ public interface IFormat : IHasSolution
             }
         });
 
+    /// <summary>
+    /// Apply code style preferences using <c>dotnet format</c>.
+    /// </summary>
     Target Format => _ => _
         .Executes(() =>
         {

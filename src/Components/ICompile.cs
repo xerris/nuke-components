@@ -7,9 +7,16 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 namespace Xerris.Nuke.Components;
 
+/// <summary>
+/// Targets and settings for compiling the solution.
+/// </summary>
 public interface ICompile : IRestore, IClean, IHasConfiguration
 {
+    /// <summary>
+    /// Compile the solution with <c>dotnet build</c>.
+    /// </summary>
     Target Compile => _ => _
+        .Description("Compile the solution")
         .DependsOn(Clean)
         .DependsOn(Restore)
         .WhenSkipped(DependencyBehavior.Skip)
@@ -31,6 +38,9 @@ public interface ICompile : IRestore, IClean, IHasConfiguration
                 PublishDegreeOfParallelism);
         });
 
+    /// <summary>
+    /// Settings for controlling compilation behavior.
+    /// </summary>
     sealed Configure<DotNetBuildSettings> CompileSettingsBase => _ => _
         .SetProjectFile(Solution)
         .SetConfiguration(Configuration)
@@ -44,6 +54,9 @@ public interface ICompile : IRestore, IClean, IHasConfiguration
             .SetFileVersion(o.Versioning.AssemblySemFileVer)
             .SetInformationalVersion(o.Versioning.InformationalVersion));
 
+    /// <summary>
+    /// Settings for controlling publish behavior.
+    /// </summary>
     sealed Configure<DotNetPublishSettings> PublishSettingsBase => _ => _
         .SetConfiguration(Configuration)
         .EnableNoBuild()
@@ -57,11 +70,25 @@ public interface ICompile : IRestore, IClean, IHasConfiguration
             .SetFileVersion(o.Versioning.AssemblySemFileVer)
             .SetInformationalVersion(o.Versioning.InformationalVersion));
 
+    /// <summary>
+    /// Additional settings for controlling the <c>dotnet build</c> command.
+    /// </summary>
     Configure<DotNetBuildSettings> CompileSettings => _ => _;
+
+    /// <summary>
+    /// Additional settings for controlling the <c>dotnet publish</c> command.
+    /// </summary>
     Configure<DotNetPublishSettings> PublishSettings => _ => _;
 
+    /// <summary>
+    /// The publish configurations to build with.
+    /// </summary>
     IEnumerable<(Project Project, string Framework)> PublishConfigurations
         => Array.Empty<(Project Project, string Framework)>();
 
+    /// <summary>
+    /// The number of projects to publish in parallel when running the <c>dotnet publish</c> command. Defaults to
+    /// <c>10</c>.
+    /// </summary>
     int PublishDegreeOfParallelism => 10;
 }

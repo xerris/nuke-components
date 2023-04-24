@@ -58,7 +58,7 @@ public interface ITest : IHasArtifacts, ICompile
                 ReportTestCount();
             }
         });
-    
+
     private void ReportTestResults()
     {
         TestResultDirectory.GlobFiles("*.trx").ForEach(x =>
@@ -67,7 +67,7 @@ public interface ITest : IHasArtifacts, ICompile
                 title: $"{Path.GetFileNameWithoutExtension(x)} ({AzurePipelines.Instance.StageDisplayName})",
                 files: new string[] { x }));
     }
-    
+
     private void ReportTestCount()
     {
         static IEnumerable<string> GetOutcomes(AbsolutePath file)

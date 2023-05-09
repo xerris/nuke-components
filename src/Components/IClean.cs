@@ -1,6 +1,6 @@
 using Nuke.Common;
+using Nuke.Common.IO;
 using Nuke.Common.Tools.DotNet;
-using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 namespace Xerris.Nuke.Components;
@@ -27,6 +27,6 @@ public interface IClean : IHasSolution
                 .SetProject(Solution));
 
             if (CleanArtifactsDirectory && this is IHasArtifacts hasArtifacts)
-                EnsureCleanDirectory(hasArtifacts.ArtifactsDirectory);
+                hasArtifacts.ArtifactsDirectory.CreateOrCleanDirectory();
         });
 }

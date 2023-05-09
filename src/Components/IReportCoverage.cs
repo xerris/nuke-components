@@ -25,12 +25,12 @@ public interface IReportCoverage : ITest, IHasReports, IHasGitRepository
     /// <summary>
     /// The output directory for coverage reports.
     /// </summary>
-    string CoverageReportDirectory => ReportDirectory / "coverage-report";
+    AbsolutePath CoverageReportDirectory => ReportDirectory / "coverage-report";
 
     /// <summary>
     /// The path to the coverage report archive (.zip).
     /// </summary>
-    string CoverageReportArchive => Path.ChangeExtension(CoverageReportDirectory, ".zip");
+    AbsolutePath CoverageReportArchive => Path.ChangeExtension(CoverageReportDirectory, ".zip");
 
     /// <summary>
     /// Create code coverage reports.
@@ -48,10 +48,7 @@ public interface IReportCoverage : ITest, IHasReports, IHasGitRepository
                 .Apply(ReportGeneratorSettingsBase)
                 .Apply(ReportGeneratorSettings));
 
-            CompressionTasks.CompressZip(
-                CoverageReportDirectory,
-                CoverageReportArchive,
-                fileMode: FileMode.Create);
+            CoverageReportDirectory.ZipTo(CoverageReportArchive, fileMode: FileMode.Create);
         });
 
     /// <summary>

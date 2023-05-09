@@ -30,18 +30,18 @@ public interface IFormat : IHasSolution
         .TryBefore<ICompile>()
         .Executes(() =>
         {
-            DotNet($"format whitespace {Solution} " +
-                "--verify-no-changes " +
+            DotNet($"format whitespace {Solution.Path} " +
+                $"--verify-no-changes " +
                 $"{ExcludedPathsArgument}");
 
-            DotNet($"format style {Solution} " +
-                "--verify-no-changes " +
+            DotNet($"format style {Solution.Path} " +
+                $"--verify-no-changes " +
                 $"{ExcludedPathsArgument}");
 
             if (RunFormatAnalyzers)
             {
-                DotNet($"format analyzers {Solution} " +
-                    "--verify-no-changes " +
+                DotNet($"format analyzers {Solution.Path} " +
+                    $"--verify-no-changes " +
                     $"{ExcludedPathsArgument}");
             }
         });
@@ -52,15 +52,15 @@ public interface IFormat : IHasSolution
     Target Format => _ => _
         .Executes(() =>
         {
-            DotNet($"format whitespace {Solution} " +
+            DotNet($"format whitespace {Solution.Path} " +
                 $"{ExcludedPathsArgument}");
 
-            DotNet($"format style {Solution} " +
+            DotNet($"format style {Solution.Path} " +
                 $"{ExcludedPathsArgument}");
 
             if (RunFormatAnalyzers)
             {
-                DotNet($"format analyzers {Solution} " +
+                DotNet($"format analyzers {Solution.Path} " +
                     $"{ExcludedPathsArgument}");
             }
         });

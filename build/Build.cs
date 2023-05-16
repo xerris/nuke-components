@@ -46,7 +46,7 @@ partial class Build : NukeBuild,
 
     bool IReportCoverage.CreateCoverageHtmlReport => true;
 
-    IEnumerable<Project> ITest.TestProjects => Partition.GetCurrent(Solution.GetProjects("*.Tests"));
+    IEnumerable<Project> ITest.TestProjects => Partition.GetCurrent(Solution.GetAllProjects("*.Tests"));
 
     Configure<DotNetPublishSettings> ICompile.PublishSettings => _ => _
         .When(!ScheduledTargets.Contains(((IPush) this).Push), _ => _

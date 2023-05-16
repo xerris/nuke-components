@@ -21,7 +21,7 @@ class Build : NukeBuild, ICompile, ITest, IReportCoverage
     readonly Solution Solution;
     Solution IHasSolution.Solution => Solution;
 
-    public IEnumerable<Project> TestProjects => Solution.GetProjects("*.Tests");
+    public IEnumerable<Project> TestProjects => Solution.GetAllProjects("*.Tests");
 
     public bool CreateCoverageHtmlReport => true;
 }

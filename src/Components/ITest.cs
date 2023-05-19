@@ -2,6 +2,7 @@ using System.Globalization;
 using Nuke.Common;
 using Nuke.Common.CI.AzurePipelines;
 using Nuke.Common.CI.GitHubActions;
+using Nuke.Common.CI.TeamCity;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
@@ -104,6 +105,8 @@ public interface ITest : IHasArtifacts, ICompile
             .EnableCollectCoverage()
             .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
             .SetExcludeByFile("*.Generated.cs")
+            .When(TeamCity.Instance is not null, _ => _
+                .SetCoverletOutputFormat($"\\\"{CoverletOutputFormat.cobertura},{CoverletOutputFormat.teamcity}\\\""))
             .When(IsServerBuild, _ => _
                 .EnableUseSourceLink()));
 
@@ -115,6 +118,11 @@ public interface ITest : IHasArtifacts, ICompile
         // https://github.com/Tyrrrz/GitHubActionsTestLogger
         .When(GitHubActions.Instance is not null && v.HasPackageReference("GitHubActionsTestLogger"), _ => _
             .AddLoggers("GitHubActions;report-warnings=false"))
+        // https://github.com/JetBrains/TeamCity.VSTest.TestAdapter
+        .When(TeamCity.Instance is not null && v.HasPackageReference("TeamCity.VSTest.TestAdapter"), _ => _
+            .AddLoggers("TeamCity")
+            // https://github.com/xunit/visualstudio.xunit/pull/108
+            .AddRunSetting("RunConfiguration.NoAutoReporters", bool.TrueString))
         .AddLoggers($"trx;LogFileName={v.Name}.trx")
         .When(InvokedTargets.Contains((this as IReportCoverage)?.ReportCoverage) || IsServerBuild, _ => _
             .SetCoverletOutput(TestResultDirectory / $"{v.Name}.xml"));

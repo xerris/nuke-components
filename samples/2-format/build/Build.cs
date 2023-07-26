@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Nuke.Common;
+using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Xerris.Nuke.Components;
 
@@ -20,7 +21,7 @@ class Build : NukeBuild, IFormat, ICompile
     readonly Solution Solution;
     Solution IHasSolution.Solution => Solution;
 
-    public IEnumerable<string> ExcludedFormatPaths => Enumerable.Empty<string>();
+    public IEnumerable<AbsolutePath> ExcludedFormatPaths => Enumerable.Empty<AbsolutePath>();
 
     Target ICompile.Compile => _ => _
         .Inherit<ICompile>()

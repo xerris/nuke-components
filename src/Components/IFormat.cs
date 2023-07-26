@@ -1,4 +1,5 @@
 using Nuke.Common;
+using Nuke.Common.IO;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 namespace Xerris.Nuke.Components;
@@ -9,9 +10,10 @@ namespace Xerris.Nuke.Components;
 public interface IFormat : IHasSolution
 {
     /// <summary>
-    /// Paths to exclude from formatting and formatting verification.
+    /// Paths to exclude from formatting and formatting verification. Paths must be relative to the build's root
+    /// directory (<see cref="NukeBuild.RootDirectory"/>)
     /// </summary>
-    IEnumerable<string> ExcludedFormatPaths { get; }
+    IEnumerable<AbsolutePath> ExcludedFormatPaths { get; }
 
     /// <summary>
     /// Whether or not to run third-party analyzers as part of formatting verification.
@@ -31,18 +33,17 @@ public interface IFormat : IHasSolution
         .Executes(() =>
         {
             DotNet($"format whitespace {Solution.Path} " +
-                $"--verify-no-changes " +
-                $"{ExcludedPathsArgument}");
+                "--verify-no-changes " +
+                ExcludedPathsArgument);
 
             DotNet($"format style {Solution.Path} " +
-                $"--verify-no-changes " +
-                $"{ExcludedPathsArgument}");
-
+                "--verify-no-changes " +
+                ExcludedPathsArgument);
             if (RunFormatAnalyzers)
             {
                 DotNet($"format analyzers {Solution.Path} " +
-                    $"--verify-no-changes " +
-                    $"{ExcludedPathsArgument}");
+                    "--verify-no-changes " +
+                    ExcludedPathsArgument);
             }
         });
 

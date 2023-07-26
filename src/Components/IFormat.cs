@@ -39,6 +39,7 @@ public interface IFormat : IHasSolution
             DotNet($"format style {Solution.Path} " +
                 "--verify-no-changes " +
                 ExcludedPathsArgument);
+
             if (RunFormatAnalyzers)
             {
                 DotNet($"format analyzers {Solution.Path} " +
@@ -54,15 +55,15 @@ public interface IFormat : IHasSolution
         .Executes(() =>
         {
             DotNet($"format whitespace {Solution.Path} " +
-                $"{ExcludedPathsArgument}");
+                ExcludedPathsArgument);
 
             DotNet($"format style {Solution.Path} " +
-                $"{ExcludedPathsArgument}");
+                ExcludedPathsArgument);
 
             if (RunFormatAnalyzers)
             {
                 DotNet($"format analyzers {Solution.Path} " +
-                    $"{ExcludedPathsArgument}");
+                    ExcludedPathsArgument);
             }
         });
 }

@@ -36,7 +36,7 @@ public interface IReportCoverage : ITest, IHasReports, IHasGitRepository
     /// Create code coverage reports.
     /// </summary>
     Target ReportCoverage => _ => _
-        .DependsOn(Test)
+        .TryTriggeredBy<ITest>(x => x.Test)
         .Consumes(Test)
         .Produces(CoverageReportArchive)
         .Executes(() =>

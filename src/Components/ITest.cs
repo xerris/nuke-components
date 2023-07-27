@@ -101,7 +101,7 @@ public interface ITest : IHasArtifacts, ICompile
         .SetNoBuild(SucceededTargets.Contains(Compile))
         .ResetVerbosity()
         .SetResultsDirectory(TestResultDirectory)
-        .When(InvokedTargets.Contains((this as IReportCoverage)?.ReportCoverage) || IsServerBuild, _ => _
+        .When(ExecutionPlan.Contains((this as IReportCoverage)?.ReportCoverage) || IsServerBuild, _ => _
             .EnableCollectCoverage()
             .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
             .SetExcludeByFile("*.Generated.cs")
@@ -124,7 +124,7 @@ public interface ITest : IHasArtifacts, ICompile
             // https://github.com/xunit/visualstudio.xunit/pull/108
             .AddRunSetting("RunConfiguration.NoAutoReporters", bool.TrueString))
         .AddLoggers($"trx;LogFileName={v.Name}.trx")
-        .When(InvokedTargets.Contains((this as IReportCoverage)?.ReportCoverage) || IsServerBuild, _ => _
+        .When(ExecutionPlan.Contains((this as IReportCoverage)?.ReportCoverage) || IsServerBuild, _ => _
             .SetCoverletOutput(TestResultDirectory / $"{v.Name}.xml"));
 
     /// <summary>

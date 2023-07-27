@@ -47,6 +47,11 @@ jobs:
         with:
           name: test-results
           path: artifacts/test-results
+      - name: 'Publish: coverage-report.zip'
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report.zip
+          path: artifacts/reports/coverage-report.zip
   ubuntu-latest:
     name: ubuntu-latest
     runs-on: ubuntu-latest
@@ -68,6 +73,11 @@ jobs:
         with:
           name: test-results
           path: artifacts/test-results
+      - name: 'Publish: coverage-report.zip'
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report.zip
+          path: artifacts/reports/coverage-report.zip
   macos-latest:
     name: macos-latest
     runs-on: macos-latest
@@ -89,3 +99,8 @@ jobs:
         with:
           name: test-results
           path: artifacts/test-results
+      - name: 'Publish: coverage-report.zip'
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report.zip
+          path: artifacts/reports/coverage-report.zip
